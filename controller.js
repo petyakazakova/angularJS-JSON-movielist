@@ -3,7 +3,7 @@ angular.module('MovieApp', [])
 
     //Call MovieFactory get function
     MovieFactory.get().then(function(response) {
-        console.log(typeof(response.data));
+
     });
 
   }]);
