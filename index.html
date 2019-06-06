@@ -1,6 +1,11 @@
+<!-- run app: http-server -o -->
+
 <!DOCTYPE html>
 <html ng-app="MovieApp">
   <head>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css?family=Lato&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.8/angular.min.js"></script>
    <script src="controller.js"></script>
    <script src="factory.js"></script>
@@ -9,6 +14,58 @@
   </head>
 
   <body ng-controller="MovieController">
+
+    <h1>This is a list of movies</h1>
+
+    <div id="selector" class="form-row">
+      <p>Sort movies: </p>
+      <div class="col">
+        <select class="form-control form-control-inline mr-3 w-100" ng-model="movieOrder">
+          <option value="title">Alphabetically</option>
+          <option value="imdbRating">IMDb Ratings</option>
+          <option value="year">Release Date</option>
+        </select>
+      </div>
+      <!-- Ascending / descending -->
+      <div id="asc-desc" class="col-5 col-md-4">
+        <div class="form-check form-check-inline">
+          <label class="form-check-label">
+            <input class="form-check-input" type="radio" name="direction" checked ng-model="direction"> asc
+          </label>
+        </div>
+        <div class="form-check form-check-inline">
+          <label class="form-check-label">
+            <input class="form-check-input" type="radio" name="direction" value="reverse" ng-model="direction"> desc
+          </label>
+        </div>
+      </div>
+    </div>
+
+
+    <ul id="list-container">
+      <li>
+        <div class="list-container" ng-repeat="movie in movies | orderBy:movieOrder:direction">
+          <img ng-src="{{movie.posterurl}}" alt="{{movie.title}}">
+          <div class="text-container">
+            <h2>{{movie.title}}</h2>
+            <p class="storyline">{{ movie.storyline | limitTo: 180 }}{{movie.storyline.length > 180 ? '...' : '(No storyline added)'}}</p>
+            <p><b>Duration: </b>
+              {{finalResult}}
+            </p>
+            <div class="details">
+              <p>
+              <b>Year:</b> {{movie.year}}
+              </p>
+              <p class="ratings">
+                <b>IMDb: </b>
+                <span><img class="ratings-img" src="/ratings.svg" alt="movie ratings"></span>
+                {{movie.imdbRating === "" ? '...' : movie.imdbRating}}
+              </p>
+            </div>
+          </div>
+        </div>
+      </li>
+    </ul>
 
   </body>
 
